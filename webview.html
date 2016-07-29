@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<style>
+			.mui-table-view-cell p {
+				display: inline-block;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title"></h1>
+		</header>
+		<script src="js/mui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+			var w, embed, ws;
+			mui.init({
+				swipeBack: true
+			});
+			mui.plusReady(function() {
+				ws = plus.webview.currentWebview();
+				var url = ws.url;
+				var title = ws.title;
+				$(".mui-title").html(title);
+				var topoffset = '45px';
+				if(plus.navigator.isImmersedStatusbar()) { // 兼容immersed状态栏模式
+					topoffset = (Math.round(plus.navigator.getStatusbarHeight()) + 45) + 'px';
+				}
+				embed = plus.webview.create(url, 'embed', {
+					top: topoffset,
+					bottom: '0px',
+					position: 'dock',
+					dock: 'bottom',
+					bounce: 'vertical'
+				});
+				ws.append(embed);
+				ws.append("/js/mui.min.js");
+				ws.append("/js/embed.js");
+				embed.addEventListener('loaded', function() {
+					Common.closeWaiting(w);
+				}, false);
+				embed.addEventListener('loading', function() {
+					w = Common.showWaiting();
+				}, false);
+			});
+		</script>
+	</body>
+
+</html>

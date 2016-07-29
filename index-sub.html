@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<style>
+			
+			.addrec {
+				padding: 5px;
+			}
+			
+			.name {
+				font-size: 14px;
+				line-height: 30px;
+				height: 30px;
+				overflow: hidden;
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="mui-content mui-scroll-wrapper" id="pullrefresh">
+			<div class="mui-scroll">
+				<!--轮播图-->
+				<div id="carouselSlider" class="mui-slider">
+					<div class="mui-slider-group mui-slider-loop" id="loop">
+					</div>
+					<div class="mui-slider-indicator mui-text-right" id="indicator">
+					</div>
+				</div>
+				<div class="addrec">
+					<div class="mui-slider" id="addRecommendSlider">
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/template" id="loopTpl">
+			<div class="mui-slider-item mui-slider-item-duplicate">
+				<a href="javascript:;" data-url="<%=list[list.length-1].url%>">
+					<img src="<%=list[list.length-1].img%>">
+					<p class="mui-slider-title">
+						<%=list[list.length-1].title%>
+					</p>
+				</a>
+			</div>
+			<% _.each(list, function(v, i){ %>
+			<div class="mui-slider-item">
+				<a href="javascript:;" data-url="<%=v.url%>">
+					<img src="<%=v.img%>">
+					<p class="mui-slider-title">
+						<%=v.title%>
+					</p>
+				</a>
+			</div>
+			<% }) %>
+			<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+			<div class="mui-slider-item mui-slider-item-duplicate">
+				<a href="javascript:;" data-url="<%=list[0].url%>">
+					<img src="<%=list[0].img%>">
+					<p class="mui-slider-title">
+						<%=list[0].title%>
+					</p>
+				</a>
+			</div>
+		</script>
+		<script type="text/template" id="indicatorTpl">
+			<% _.each(list, function(v, i){ %>
+			<% if(i == 0){ %>
+			<div class="mui-indicator mui-active"></div>
+			<% } else { %>
+			<div class="mui-indicator"></div>
+			<% } %>
+			<% }) %>
+		</script>
+		<script type="text/template" id="sliderTpl">
+			<div id="sliderSegmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+				<% _.each(list, function(v, i){ %>
+				<a class="mui-control-item <%if(i == 0){%> mui-active <%}%>" href="#item<%=i+1%>">
+					<%=_.template.title(v.tab.title)%>
+				</a>
+				<% }) %>
+			</div>
+			<div id="list">
+				<% _.each(list, function(v, i){ %>
+				<div id="item<%=i+1%>" class="mui-control-content <%if(i==0){%> mui-active<%}%>">
+					<ul class="mui-table-view mui-grid-view mui-grid-9">
+						<% _.each(v.list, function(vv, ii){ %>
+						<li class="mui-table-view-cell mui-media mui-col-xs-6" style="padding: 5px;" data-url="<%=vv.url%>">
+							<a href="javascript:;">
+								<img src="<%=vv.img%>" width="100%" />
+								<p class="mui-slider-title" style="text-align:center;text-indent:0;opacity:.7;">
+									<%=vv.update%>
+								</p>
+							</a>
+							<p class="name">
+								<%=vv.name%>
+							</p>
+						</li>
+						<% }) %>
+					</ul>
+				</div>
+				<% }) %>
+			</div>
+		</script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/underscore.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+			var loopTplRender = _.template($("#loopTpl").html());
+			var indicatorTplRender = _.template($("#indicatorTpl").html());
+			var sliderTplRender = _.template($("#sliderTpl").html());
+
+			_.template.title = function(title) {
+				if(title) {
+					return title.replace("动漫", "");
+				} else {
+					return "-";
+				}
+			};
+
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					}
+				}
+			});
+			mui.plusReady(function() {
+				pulldownRefresh();
+
+				$("#loop").on("tap", "a", function() {
+					var url = $(this).attr("data-url");
+					console.log(url);
+					Common.open("news-detail.html", "news-detail.html", {
+						url: encodeURIComponent(url)
+					});
+				});
+
+				$("#addRecommendSlider").on("tap", "li", function() {
+					var url = $(this).attr("data-url");
+					Common.open("animate-detail.html", "animate-detail.html", {
+						url: encodeURIComponent(url)
+					});
+				});
+			});
+
+			function carousel() {
+				$.ajax({
+					url: Common.api + '/carousel',
+					async: true,
+					cache: false,
+					method: 'get',
+					dataType: 'json',
+					success: function(data) {
+						var obj = {
+							list: data
+						};
+						$("#loop").html(loopTplRender(obj));
+						$("#indicator").html(indicatorTplRender(obj));
+						mui("#carouselSlider").slider({
+							interval: 5000
+						});
+					}
+				});
+			}
+
+			function addRecommend() {
+				$.ajax({
+					url: Common.api + '/addRecommend',
+					async: true,
+					cache: false,
+					method: 'get',
+					dataType: 'json',
+					success: function(data) {
+						var obj = {
+							list: data
+						};
+						$("#addRecommendSlider").html(sliderTplRender(obj));
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+					}
+				});
+			}
+
+			function pulldownRefresh() {
+				carousel();
+				addRecommend();
+			}
+		</script>
+	</body>
+
+</html>

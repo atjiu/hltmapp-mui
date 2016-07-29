@@ -1,0 +1,35 @@
+.comictype li em,.comictype .current em{ background: url('http://www.hltm.tv/statics/tp/images/bimg.png');}
+
+.comictype{ height:40px; border-bottom: 2px solid #f44434; width: 100%; float: left;}
+.comictype li{ float:left; width:180px; height:40px;  line-height:40px; font-weight:normal; cursor:pointer; font-size:16px; overflow:hidden;}
+.comictype li a{ display:block; padding-left: 20px; width:160px; height:40px; color:#868686}
+.comictype .normal{ background:url(../images/index_tab.png) no-repeat -300px -50px;}
+.comictype span a{ line-height:30px; padding:0 8px; border-right:1px solid #8bc164; text-decoration:underline}
+.comictype .normal a{ color:#868686}
+.comictype .current{ background-position: 0 -300px; border-bottom: 2px solid #f44434; height: 38px;}
+.comictype .current a{color:#f44434}
+.tabcon01{ overflow:hidden; border-left:1px solid #e6e6e6; border-top:none; width:720px;  float: left;}
+.tabcon01 .normal { display:none;}
+.tabcon01 .current { display:block;}
+.comictype li em{ width: 26px; height: 26px; display: block; float: left; margin: 7px;}
+.comictype li .ctype01{ background-position:0 -200px;}
+.comictype li a:hover .ctype01,.comictype .current .ctype01{ background-position: 0 -250px;}
+.comictype li .ctype02{ background-position:-50px -200px;}
+.comictype li a:hover .ctype02,.comictype .current .ctype02{ background-position: -50px -250px;}
+.comictype li .ctype03{ background-position:-100px -200px;}
+.comictype li a:hover .ctype03,.comictype .current .ctype03{ background-position: -100px -250px;}
+.comictype li .ctype04{ background-position:-150px -200px;}
+.comictype li a:hover .ctype04,.comictype .current .ctype04{ background-position: -150px -250px;}
+
+body, .mui-content {
+	background-color: #FFFFFF;
+}
+.mui-segmented-control {
+	background-color: #FFFFFF;
+}
+.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+	color: #f44434;
+	border-bottom: 2px solid #f44434!important;
+}
+.mui-icon {color: #f44434;}
+.mui-table-view {background-color: #FFFFFF!important;}

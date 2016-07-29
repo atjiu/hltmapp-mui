@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/media.css" />
+		<link rel="stylesheet" href="css/app.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">新闻列表</h1>
+		</header>
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div id="list"></div>
+			</div>
+		</div>
+		<script type="text/template" id="tpl">
+			<ul class="mui-table-view recom">
+				<% _.each(list, function(v, i){ %>
+				<li class="mui-table-view-cell" data-url="<%=v.url%>">
+					<a href="javascript:;">
+						<div class="media">
+							<div class="media-left">
+								<img src="<%=v.img%>" width="60" />
+							</div>
+							<div class="media-body">
+								<div style="font-size: 16px; font-weight: 400; white-space: normal;">
+									<%=v.title%>
+								</div>
+								<p style="white-space: normal;">
+									<%=v.description%>
+								</p>
+								<p style="float:right;">
+									<%=v.time%>
+								</p>
+							</div>
+						</div>
+					</a>
+				</li>
+				<% }) %>
+			</ul>
+		</script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/underscore.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+			var tplRender = _.template($("#tpl").html());
+			var page = 1;
+			mui.init({
+				swipeBack: true,
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			
+			if (mui.os.plus) {
+				mui.plusReady(function() {
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 400);
+				});
+			} else {
+				mui.ready(function() {
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+
+			function pulldownRefresh() {
+				page = 1;
+				$.ajax({
+					url: Common.api + '/news',
+					async: true,
+					cache: false,
+					method: 'get',
+					dataType: 'json',
+					data: {
+						page: page
+					},
+					success: function(data) {
+						if(!data.lastPage) {
+							page++;
+						}
+						$("#list").html(tplRender(data));
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						//必须在页面渲染好了再注册tap事件，否则不生效
+						$(".recom").on("tap", "li", function() {
+							var url = $(this).attr("data-url");
+							Common.open("news-detail.html", "news-detail.html", {
+								url: encodeURIComponent(url)
+							});
+						});
+					}
+				});
+			}
+
+			function pullupRefresh() {
+				$.ajax({
+					url: Common.api + '/news',
+					async: true,
+					cache: false,
+					method: 'get',
+					dataType: 'json',
+					data: {
+						page: page
+					},
+					success: function(data) {
+						if(!data.lastPage) {
+							page++;
+						}
+						$("#list").append(tplRender(data));
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh(data.lastPage); //参数为true代表没有更多数据了。
+						//必须在页面渲染好了再注册tap事件，否则不生效
+						$(".recom").on("tap", "li", function() {
+							var url = $(this).attr("data-url");
+							Common.open("news-detail.html", "news-detail.html", {
+								url: encodeURIComponent(url)
+							});
+						});
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

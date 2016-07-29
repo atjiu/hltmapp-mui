@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			ul li {
+				list-style: none;
+			}
+			
+			.media-left {
+				float: left;
+				width: 42%;
+			}
+			
+			.media-left img {
+				width: 100%;
+			}
+			
+			.media-body {
+				float: right;
+				width: 57%
+			}
+			
+			.nav {
+				width: 100%
+			}
+			
+			.nav li {
+				vertical-align: text-top;
+			}
+			
+			.nav li span {
+				color: #a5a5a5;
+				font-size: 14px;
+				text-align: right;
+				width: 65px;
+				display: inline-block;
+				padding-right: 5px
+			}
+			
+			.nav li em {
+				font-style: normal;
+				overflow: hidden;
+				display: inline-block;
+				width: 60%;
+				font-size: 14px;
+			}
+			
+			.nav dl {
+				width: 100%;
+				overflow: hidden;
+			}
+			
+			.nav dl dt {
+				float: left;
+				width: 35%;
+				color: #a5a5a5;
+				font-size: 12px;
+				text-align: right;
+			}
+			
+			.nav dl dd {
+				width: 64%;
+				float: left;
+				font-size: 14px;
+				padding-left: 5px;
+			}
+			
+			.dl {
+				background: #f44434;
+				font-weight: bold;
+				border: 1px solid #f44434;
+				width: 40%;
+				height: 38px;
+				line-height: 35px;
+				text-align: center;
+				color: white;
+				border-bottom: none;
+			}
+			
+			.clearfix {
+				clear: both;
+			}
+			
+			.recom em {
+				width: 16px;
+				height: 16px;
+				display: inline-block;
+				margin: 4px 4px 4px 0;
+				font-style: normal;
+				font-size: 12px;
+				line-height: 16px;
+				color: #fff;
+				text-align: center;
+				background: #f2f2f2;
+				border: 1px solid #cecece;
+				color: #b9b9b9;
+			}
+			
+			.recom em.top {
+				background: #F44434;
+				border: 1px solid #F44434;
+				color: #fff;
+			}
+			
+			.mui-card-content-inner img {
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title"></h1>
+		</header>
+		<div class="mui-content">
+			<!--<div class="mui-content-padded">-->
+			<script type="text/template" id="tpl">
+				<div class="mui-card">
+					<div class="mui-card-content">
+						<div class="mui-card-content-inner">
+							<h4><%=name%></h4>
+							<div class="media">
+								<div class="media-left">
+									<img src="<%=img%>" />
+								</div>
+								<div class="media-body">
+									<ul class="nav">
+										<% _.each(opts, function(v, i){ %>
+										<li>
+											<dl>
+												<dt><%=v.key%></dt>
+												<dd>
+													<%=v.value%>
+												</dd>
+											</dl>
+										</li>
+										<% }) %>
+									</ul>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+				<div class="mui-card">
+					<div class="mui-card-content">
+						<div class="mui-card-content-inner">
+							<div class="dl">动漫下载</div>
+							<div id="sliderSegmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+								<% _.each(download, function(v, i){ %>
+								<a class="mui-control-item <%if(i == 0){%> mui-active <%}%>" href="#item<%=i+1%>">
+									<%=v.tab%>
+								</a>
+								<% }) %>
+							</div>
+							<div id="list">
+								<% _.each(download, function(v, i){ %>
+								<div id="item<%=i+1%>" class="mui-control-content <%if(i==0){%> mui-active<%}%>">
+									<ul class="mui-table-view" id="animatedl">
+										<% _.each(v.list, function(vv, ii){ %>
+										<li class="mui-table-view-cell" data-url="<%=vv.url%>">
+											<a href="javascript:;">
+												<%=vv.name%>
+											</a>
+										</li>
+										<% }) %>
+									</ul>
+								</div>
+								<% }) %>
+							</div>
+						</div>
+					</div>
+				</div>
+				<% if(recommend.length > 0){ %>
+				<div class="mui-card">
+					<div class="mui-card-content">
+						<div class="mui-card-content-inner">
+							<div class="dl">相关推荐</div>
+							<ul class="mui-table-view recom">
+								<% _.each(recommend, function(v, i){ %>
+								<li class="mui-table-view-cell" data-url="<%=v.url%>">
+									<a href="javascript:;">
+										<em <%if(i<3){%>class="top"<%}%>><%=v.sort%></em>
+										<%=v.name%>
+									</a>
+								</li>
+								<% }) %>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<% } %>
+				<% if(editRecommend.length > 0){ %>
+				<div class="mui-card">
+					<div class="mui-card-content">
+						<div class="mui-card-content-inner">
+							<div class="dl">编辑推荐</div>
+							<ul class="mui-table-view recom">
+								<% _.each(editRecommend, function(v, i){ %>
+								<li class="mui-table-view-cell" data-url="<%=v.url%>">
+									<a href="javascript:;">
+										<em <%if(i<3){%>class="top"<%}%>><%=v.sort%></em>
+										<%=v.name%>
+									</a>
+								</li>
+								<% }) %>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<% } %>
+				<div class="mui-card">
+					<div class="mui-card-content">
+						<div class="mui-card-content-inner">
+							<%=_.template.filterStyle(intro)%>
+						</div>
+					</div>
+				</div>
+			</script>
+			<!--</div>-->
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/underscore.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+			_.template.filterStyle = function(html) {
+				return html.replace(/style=\".*?\"/g, "");
+			}
+			var tplRender = _.template($("#tpl").html());
+			var w;
+			mui.init({
+				swipeBack: true
+			});
+			mui.plusReady(function() {
+				var url = plus.webview.currentWebview().url;
+				w = Common.showWaiting();
+				getData(url);
+			});
+
+			function getData(url) {
+				$.ajax({
+					url: Common.api + '/detail',
+					async: true,
+					cache: false,
+					method: 'get',
+					dataType: 'json',
+					data: {
+						url: url
+					},
+					success: function(data) {
+						plus.webview.currentWebview().evalJS('mui.scrollTo(0, 100)');
+						$(".mui-title").html(data.name);
+						$(".mui-content").html(tplRender(data));
+						Common.closeWaiting(w);
+						//必须在页面渲染好了再注册tap事件，否则不生效
+						mui("#animatedl").on("tap", "li", function() {
+							var url = this.getAttribute("data-url");
+							console.log(url);
+						});
+						$(".recom").on("tap", "li", function() {
+							w = Common.showWaiting();
+							var url = $(this).attr("data-url");
+							getData(encodeURIComponent(url));
+						});
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

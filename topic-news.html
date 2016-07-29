@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/app.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">榜单资讯</h1>
+		</header>
+		<div class="mui-content">
+			<script type="text/template" id="tpl">
+				<div id="sliderSegmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+					<% _.each(list, function(v, i){ %>
+					<a class="mui-control-item <%if(i == 0){%> mui-active <%}%>" href="#item<%=i+1%>">
+						<%=v.tab%>
+					</a>
+					<% }) %>
+				</div>
+				<% _.each(list, function(v, i){ %>
+				<div id="item<%=i+1%>" class="mui-control-content <%if(i==0){%> mui-active<%}%>">
+					<ul class="mui-table-view">
+						<% _.each(v.list, function(vv, ii){ %>
+						<li class="mui-table-view-cell" data-url="<%=vv.url%>">
+							<a href="javascript:;">
+								<%=vv.name%>
+								<p style="display: inline-block;"><%=vv.episode%></p>
+							</a>
+						</li>
+						<% }) %>
+					</ul>
+				</div>
+				<% }) %>
+			</script>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/underscore.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+		var tplRender = _.template($("#tpl").html());
+			var w;
+			mui.init({
+				swipeBack: true
+			});
+			mui.plusReady(function() {
+				w = Common.showWaiting();
+				$.ajax({
+					url: Common.api + '/ranking',
+					async: true,
+					cache: false,
+					method: 'get',
+					dataType: 'json',
+					data: {},
+					success: function(data) {
+						var obj = {
+							list: data
+						};
+						$(".mui-content").html(tplRender(obj));
+						Common.closeWaiting(w);
+
+						//必须在页面渲染好了再注册tap事件，否则不生效
+						$(".mui-table-view").on("tap", "li", function() {
+							var url = $(this).attr("data-url");
+							if(url.indexOf("/view/") != -1) {
+							Common.open("animate-detail.html", "animate-detail.html", {
+								url: encodeURIComponent(url)
+							});
+							} else if(url.indexOf("/new/") != -1) {
+								Common.open("news-detail.html", "news-detail.html", {
+								url: encodeURIComponent(url)
+							});
+							}
+						});
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>

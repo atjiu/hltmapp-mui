@@ -1,0 +1,122 @@
+var verData = [{
+	text: '全部',
+	value: ''
+}, {
+	text: 'TV番组',
+	value: '1'
+}, {
+	text: 'OVA',
+	value: '2'
+}, {
+	text: 'OAD',
+	value: '3'
+}, {
+	text: '剧场版',
+	value: '4'
+}, {
+	text: '特别版',
+	value: '5'
+}, {
+	text: '真人版',
+	value: '6'
+}, {
+	text: '动画版',
+	value: '7'
+}, {
+	text: '其他',
+	value: '100'
+}];
+
+var letterData = [{
+	text: '全部',
+	value: ''
+}, {
+	text: 'A',
+	value: 'A'
+}, {
+	text: 'B',
+	value: 'B'
+}, {
+	text: 'C',
+	value: 'C'
+}, {
+	text: 'D',
+	value: 'D'
+}, {
+	text: 'E',
+	value: 'E'
+}, {
+	text: 'F',
+	value: 'F'
+}, {
+	text: 'G',
+	value: 'G'
+}, {
+	text: 'H',
+	value: 'H'
+}, {
+	text: 'I',
+	value: 'I'
+}, {
+	text: 'J',
+	value: 'J'
+}, {
+	text: 'K',
+	value: 'K'
+}, {
+	text: 'L',
+	value: 'L'
+}, {
+	text: 'M',
+	value: 'M'
+}, {
+	text: 'N',
+	value: 'N'
+}, {
+	text: 'O',
+	value: 'O'
+}, {
+	text: 'P',
+	value: 'P'
+}, {
+	text: 'Q',
+	value: 'Q'
+}, {
+	text: 'R',
+	value: 'R'
+}, {
+	text: 'S',
+	value: 'S'
+}, {
+	text: 'T',
+	value: 'T'
+}, {
+	text: 'U',
+	value: 'U'
+}, {
+	text: 'V',
+	value: 'V'
+}, {
+	text: 'W',
+	value: 'W'
+}, {
+	text: 'X',
+	value: 'X'
+}, {
+	text: 'Y',
+	value: 'Y'
+}, {
+	text: 'Z',
+	value: 'Z'
+}, {
+	text: '0-9',
+	value: '100'
+}];
+
+var sortData = [{
+	text: '最新播放',
+	value: ''
+}, {
+	text: '最热播放',
+	value: '1'
+}]

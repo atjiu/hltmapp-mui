@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/mui.picker.min.css" />
+		<link rel="stylesheet" href="css/media.css" />
+		<link rel="stylesheet" href="css/app.css" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">连载动漫</h1>
+		</header>
+		<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			<div class="mui-scroll">
+				<div id="segmentedControl" class="mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item" href="javascript:;" id="ver">
+						<span id="verResult">版本</span><span class="mui-icon mui-icon-arrowdown" style="font-size: 14px;"></span>
+					</a>
+					<a class="mui-control-item" href="javascript:;" id="letter">
+						<span id="letterResult">字母</span><span class="mui-icon mui-icon-arrowdown" style="font-size: 14px;"></span>
+					</a>
+					<a class="mui-control-item" href="javascript:;" id="sort">
+						<span id="sortResult">排序</span><span class="mui-icon mui-icon-arrowdown" style="font-size: 14px;"></span>
+					</a>
+				</div>
+				<div id="list"></div>
+			</div>
+		</div>
+		<script type="text/template" id="tpl">
+			<ul class="mui-table-view recom">
+				<% _.each(list, function(v, i){ %>
+				<li class="mui-table-view-cell" data-url="<%=v.url%>">
+					<a href="javascript:;">
+						<div class="media">
+							<div class="media-left">
+								<img src="<%=v.img%>" width="60" />
+							</div>
+							<div class="media-body">
+								<div style="font-size: 16px; font-weight: 400;">
+									<%=v.name%>
+								</div>
+								<p>
+									<%=v.episode%>
+								</p>
+								<p>
+									<%=v.updateTime%>
+								</p>
+								<p>
+									下载次数:
+									<%=v.downloadCount%>
+								</p>
+							</div>
+						</div>
+					</a>
+				</li>
+				<% }) %>
+			</ul>
+		</script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/mui.picker.min.js"></script>
+		<script src="js/data.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/underscore.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+			var tplRender = _.template($("#tpl").html());
+			var page = 1,
+				ver = "",
+				letter = "",
+				sort = "",
+				tab = 18;
+			mui.init({
+				swipeBack: true,
+				pullRefresh: {
+					container: '#pullrefresh',
+					down: {
+						callback: pulldownRefresh
+					},
+					up: {
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			function init() {
+				//版本
+				var verPicker = new mui.PopPicker();
+				verPicker.setData(verData);
+				$("#ver").on("tap", function(){
+					verPicker.show(function(items){
+						$("#verResult").text(items[0].text);
+						ver = items[0].value;
+						mui('#pullrefresh').pullRefresh().pulldownLoading();
+					});
+				}, false);
+				//字母
+				var letterPicker = new mui.PopPicker();
+				letterPicker.setData(letterData);
+				$("#letter").on("tap", function(){
+					letterPicker.show(function(items){
+						$("#letterResult").text(items[0].text);
+						letter = items[0].value;
+						mui('#pullrefresh').pullRefresh().pulldownLoading();
+					});
+				}, false);
+				//字母
+				var sortPicker = new mui.PopPicker();
+				sortPicker.setData(sortData);
+				$("#sort").on("tap", function(){
+					sortPicker.show(function(items){
+						$("#sortResult").text(items[0].text);
+						sort = items[0].value;
+						mui('#pullrefresh').pullRefresh().pulldownLoading();
+					});
+				}, false);
+			}
+			
+			if (mui.os.plus) {
+				mui.plusReady(function() {
+					init();
+					setTimeout(function() {
+						mui('#pullrefresh').pullRefresh().pullupLoading();
+					}, 400);
+				});
+			} else {
+				mui.ready(function() {
+					init();
+					mui('#pullrefresh').pullRefresh().pullupLoading();
+				});
+			}
+
+			function pulldownRefresh() {
+				page = 1;
+				console.log("ver:"+ver, "letter:"+letter, "sort:"+sort, "tab:"+tab, "page:"+page);
+				$.ajax({
+					url: Common.api + '/list',
+					async: true,
+					cache: false,
+					method: 'get',
+					dataType: 'json',
+					data: {
+						page: page,
+						ver: ver,
+						letter: letter,
+						sort: sort,
+						tab: tab
+					},
+					success: function(data) {
+						if(!data.lastPage) {
+							page++;
+						}
+						$("#list").html(tplRender(data));
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh();
+						//必须在页面渲染好了再注册tap事件，否则不生效
+						$(".recom").on("tap", "li", function() {
+							var url = $(this).attr("data-url");
+							Common.open("animate-detail.html", "animate-detail.html", {
+								url: encodeURIComponent(url)
+							});
+						});
+					}
+				});
+			}
+
+			function pullupRefresh() {
+				$.ajax({
+					url: Common.api + '/list',
+					async: true,
+					cache: false,
+					method: 'get',
+					dataType: 'json',
+					data: {
+						page: page,
+						ver: ver,
+						letter: letter,
+						sort: sort,
+						tab: tab
+					},
+					success: function(data) {
+						if(!data.lastPage) {
+							page++;
+						}
+						$("#list").append(tplRender(data));
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh(data.lastPage); //参数为true代表没有更多数据了。
+						//必须在页面渲染好了再注册tap事件，否则不生效
+						$(".recom").on("tap", "li", function() {
+							var url = $(this).attr("data-url");
+							Common.open("animate-detail.html", "animate-detail.html", {
+								url: encodeURIComponent(url)
+							});
+						});
+					}
+				});
+			}
+		</script>
+	</body>
+
+</html>

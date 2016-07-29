@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<style>
+			.mui-badge {
+				margin-right: 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">搜索</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded">
+				<div class="mui-input-row mui-search">
+					<input type="search" id="search" class="mui-input-clear" placeholder="海贼王">
+				</div>
+				<div id="his"></div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/underscore.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+			mui.init({
+				swipeBack: true
+			});
+			mui.plusReady(function() {
+				var history = plus.storage.getItem("history");
+				if(!history) {
+					history = [];
+				} else {
+					history = JSON.parse(history);
+				}
+				viewHistory();
+				$("#search").on("keypress", function(e) {
+					var k = $(this).val();
+					if(e.keyCode == 13) {
+						if(k && k.length > 0) {
+							$(this).blur();
+							if(history.indexOf(k) == -1) {
+								history.push(k);
+							}
+							plus.storage.setItem("history", JSON.stringify(history));
+							viewHistory();
+							Common.open("search-result.html", "search-result.html", {
+								k: k
+							});
+						}
+					}
+				});
+
+				$(".mui-badge-danger").on("tap", function() {
+					Common.open("search-result.html", "search-result.html", {
+						k: $(this).text()
+					});
+				});
+
+				function viewHistory() {
+					var history = plus.storage.getItem("history");
+					if(!history) {
+						history = [];
+					} else {
+						history = JSON.parse(history);
+					}
+					var html = '';
+					$.map(history, function(v, i) {
+						html += '<span class="mui-badge mui-badge-danger">' + v + '</span>';
+					});
+					$("#his").html(html);
+				}
+			});
+		</script>
+	</body>
+
+</html>

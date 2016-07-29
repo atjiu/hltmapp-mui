@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/app.css" />
+		<style>
+			.mui-content>.mui-table-view:first-child {
+				margin-top: 0;
+			}
+			
+			.recom em {
+				width: 16px;
+				height: 16px;
+				display: inline-block;
+				margin: 4px 4px 4px 0;
+				font-style: normal;
+				font-size: 12px;
+				line-height: 16px;
+				color: #fff;
+				text-align: center;
+				background: #f2f2f2;
+				border: 1px solid #cecece;
+				color: #b9b9b9;
+			}
+			
+			.recom em.top {
+				background: #F44434;
+				border: 1px solid #F44434;
+				color: #fff;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">最新更新</h1>
+		</header>
+		<div class="mui-content">
+			<script type="text/template" id="tpl">
+				<ul class="mui-table-view recom">
+					<% _.each(list, function(v, i){ %>
+					<li class="mui-table-view-cell" data-url="<%=v.url%>">
+						<a href="javascript:;">
+							<em <%if(i<10){%>class="top"<%}%>><%=v.sort%></em>
+							<span style="font-size:14px;">
+								<%=v.type%>
+								<%=v.name%>
+							</span>
+							<span style="font-size:12px;color:#a5a5a5;float:right"><%=v.time%></span>
+						</a>
+					</li>
+					<% }) %>
+				</ul>
+			</script>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/zepto.min.js"></script>
+		<script src="js/underscore.js"></script>
+		<script src="js/common.js"></script>
+		<script>
+			var tplRender = _.template($("#tpl").html());
+			var w;
+			mui.init({
+				swipeBack: true
+			});
+			mui.plusReady(function() {
+				w = Common.showWaiting();
+				$.ajax({
+					url: Common.api + '/recentUpdate',
+					async: true,
+					cache: false,
+					method: 'get',
+					dataType: 'json',
+					data: {},
+					success: function(data) {
+						var obj = {
+							list: data
+						};
+						$(".mui-content").html(tplRender(obj));
+						Common.closeWaiting(w);
+
+						//必须在页面渲染好了再注册tap事件，否则不生效
+						$(".recom").on("tap", "li", function() {
+							var url = $(this).attr("data-url");
+							Common.open("animate-detail.html", "animate-detail.html", {
+								url: encodeURIComponent(url)
+							});
+						});
+					}
+				});
+			});
+		</script>
+	</body>
+
+</html>
