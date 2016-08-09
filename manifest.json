@@ -7,8 +7,8 @@
 	"id": "H55F9AFA1",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "红旅动漫",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.0.0",/*应用版本名称*/
-		"code": "1"
+		"name": "1.0.1",/*应用版本名称*/
+		"code": "2"
 	},
 	"description": "",/*应用描述信息*/
 	"icons": {
@@ -399,7 +399,14 @@
 			},
 			"about.html": {
 				"resources": [
-					"images/avatar.jpg"
+					"images/avatar.jpg",
+					"js/underscore.js",
+					"js/common.js",
+					"js/mui.min.js",
+					"css/app.css",
+					"js/zepto.min.js",
+					"fonts/mui.ttf",
+					"css/mui.min.css"
 				],
 				"refer": [
 					"webview.html"

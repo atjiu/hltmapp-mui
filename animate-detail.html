@@ -125,6 +125,7 @@
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title"></h1>
+			<a href="javascript:;" class="mui-pull-right"><span class="mui-icon mui-icon-redo"></span></a>
 		</header>
 		<div class="mui-content">
 			<!--<div class="mui-content-padded">-->
@@ -250,6 +251,13 @@
 				var url = plus.webview.currentWebview().url;
 				w = Common.showWaiting();
 				getData(url);
+				$(".mui-icon-redo").on("tap", function(){
+					mui.confirm("要在浏览器里打开吗？", "红旅动漫", ["算了", "嗯嗯"], function(e) {
+						if(e.index == 1) {
+							plus.runtime.openURL(decodeURIComponent(url));
+						}
+					});
+				});
 			});
 
 			function getData(url) {

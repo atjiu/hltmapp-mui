@@ -10,7 +10,7 @@
 	}
 }(this, function(Common) {
 	Common = {
-		version: "1.0.0",
+		version: "1.0.1",
 		domain: "http://www.hltm.tv",
 		api: "http://hltm-api.tomoya.cn",
 		open: function(id, url, extras) {
