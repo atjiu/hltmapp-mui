@@ -7,8 +7,8 @@
 	"id": "H55F9AFA1",/*应用的标识，创建应用时自动生成，勿手动修改*/
 	"name": "红旅动漫",/*应用名称，程序桌面图标名称*/
 	"version": {
-		"name": "1.0.1",/*应用版本名称*/
-		"code": "2"
+		"name": "1.0.2",/*应用版本名称*/
+		"code": "3"
 	},
 	"description": "",/*应用描述信息*/
 	"icons": {
@@ -55,9 +55,7 @@
 			"description": "管理应用本地数据"
 		},
 
-		"Uploader": {
-			"description": "管理文件上传任务"
-		},
+		
 		"Runtime": {
 			"description": "访问运行期环境"
 		},
@@ -83,7 +81,7 @@
 			"description": "原生对象"
 		},
 		"Statistic": {},
-		"Share": {}
+		"Share": {},"Push":{},"OAuth":{}
 	},
 	"plus": {
 		"splashscreen": {
@@ -93,7 +91,7 @@
 		"runmode": "liberate",/*应用的首次启动运行模式，可取liberate或normal，liberate模式在第一次启动时将解压应用资源（Android平台File API才可正常访问_www目录）*/
 		"signature": "Sk9JTiBVUyBtYWlsdG86aHIyMDEzQGRjbG91ZC5pbw==",/*可选，保留给应用签名，暂不使用*/
 		"distribute": {
-			"plugins": {
+			"plugins": {"push":{"igexin":{"appid":"OTemIMbYiz55QD0yViYcq3","appkey":"7AP9qzX5zm9lBvBSgkLnF9","appsecret":"AI1gcdKORB89KZ2unmKux1"}},"oauth":{"qq":{"appid":"1105504525"}},
 				"share": {
 					"qq": {
 						"appid": "1105504525",
@@ -122,19 +120,7 @@
 				"keystore": "",/*Android应用打包使用的密钥库文件*/
 				"password": "",/*Android应用打包使用密钥库中证书的密码*/
 				"aliasname": "",/*Android应用打包使用密钥库中证书的别名*/
-				"permissions": [
-					"<uses-permission android:name=\"com.android.launcher.permission.INSTALL_SHORTCUT\"/>",
-					"<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
-					"<uses-permission android:name=\"android.permission.VIBRATE\"/>",
-					"<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
-					"<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>",
-					"<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
-					"<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
-					"<uses-permission android:name=\"android.permission.RECEIVE_USER_PRESENT\"/>",
-					"<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
-					"<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\"/>",
-					"<uses-permission android:name=\"com.android.launcher.permission.UNINSTALL_SHORTCUT\"/>"
-				]
+				"permissions": ["<uses-permission android:name=\"com.android.launcher.permission.INSTALL_SHORTCUT\"/>","<uses-permission android:name=\"android.permission.GET_TASKS\"/>","<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>","<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.VIBRATE\"/>","<uses-permission android:name=\"android.permission.READ_LOGS\"/>","<uses-permission android:name=\"android.permission.WAKE_LOCK\"/>","<uses-permission android:name=\"android.permission.CALL_PHONE\"/>","<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>","<uses-permission android:name=\"android.permission.RECEIVE_USER_PRESENT\"/>","<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>","<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\"/>","<uses-permission android:name=\"com.android.launcher.permission.UNINSTALL_SHORTCUT\"/>"]
 			},
 			"orientation": [
 				"portrait-primary"
@@ -198,11 +184,11 @@
 					}
 				},
 				"android": {
-					"mdpi": "/Users/tomoya/Downloads/hltm-api/android/240x282.png", /*普通屏启动图片，分辨率：240x282*/
-					"ldpi": "/Users/tomoya/Downloads/hltm-api/android/320x442.png", /*大屏启动图片，分辨率：320x442*/
-					"hdpi": "/Users/tomoya/Downloads/hltm-api/android/480x762.png", /*高分屏启动图片，分辨率：480x762*/
-					"xhdpi": "/Users/tomoya/Downloads/hltm-api/android/720x1242.png", /*720P高分屏启动图片，分辨率：720x1242*/
-					"xxhdpi": "/Users/tomoya/Downloads/hltm-api/android/1080x1882.png"
+					"mdpi": "/Users/tomoya/Desktop/U盘/图片/hltm-api打包素材/android/240x282.png", /*普通屏启动图片，分辨率：240x282*/
+					"ldpi": "/Users/tomoya/Desktop/U盘/图片/hltm-api打包素材/android/320x442.png", /*大屏启动图片，分辨率：320x442*/
+					"hdpi": "/Users/tomoya/Desktop/U盘/图片/hltm-api打包素材/android/480x762.png", /*高分屏启动图片，分辨率：480x762*/
+					"xhdpi": "/Users/tomoya/Desktop/U盘/图片/hltm-api打包素材/android/720x1242.png", /*720P高分屏启动图片，分辨率：720x1242*/
+					"xxhdpi": "/Users/tomoya/Desktop/U盘/图片/hltm-api打包素材/android/1080x1882.png"
 				}
 			}
 		}

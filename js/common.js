@@ -10,9 +10,9 @@
 	}
 }(this, function(Common) {
 	Common = {
-		version: "1.0.1",
+		version: "1.0.2",
 		domain: "http://www.hltm.tv",
-		api: "http://hltm-api.tomoya.cn",
+		api: "https://hltm-api.tomoya.cn",
 		open: function(id, url, extras) {
 			mui.openWindow({
 				id: id,
