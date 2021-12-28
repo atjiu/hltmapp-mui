@@ -6,9 +6,9 @@
 
 ## APP下载/文档
 
-app下载地址：http://fir.im/z19l
+app下载地址：已失效
 
-接口文档：http://hltm-api.tomoya.cn/
+接口文档：已失效
 
 ## 贡献
 
